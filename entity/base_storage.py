@@ -1,6 +1,7 @@
 from typing import Dict
 
 from entity.abstract_storage import AbstractStorage
+from exceptions import NotEnoughtSpaceError, UnknownProductError, NotEnoughtProductError
 
 
 class BaseStorage(AbstractStorage):
@@ -11,21 +12,23 @@ class BaseStorage(AbstractStorage):
     def add(self, name: str, amount: int) -> None:
 
         if self.get_free_space() < amount:
-            pass
-
+            raise NotEnoughtSpaceError
 
         self._items[name] = self._items.get(name, 0) + amount
+
 
     def remove(self, name: str, amount: int) -> None:
 
         if name not in self._items:
-            pass
+            raise UnknownProductError
 
         if self._items[name] < amount:
-            ...
+            raise NotEnoughtProductError
 
 
         self._items[name] -= amount
+        if self._items[name] == 0:
+            self._items.pop(name)
 
 
     def get_free_space(self) -> int:
@@ -34,7 +37,7 @@ class BaseStorage(AbstractStorage):
     def get_items(self) -> Dict[str, int]:
         return self._items
 
-    def get_uniqe_items_count(self) -> int:
+    def get_unique_items_count(self) -> int:
         return len(self._items)
 
 

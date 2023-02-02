@@ -21,7 +21,7 @@ class AbstractStorage(ABC):
         pass
 
     @abstractmethod
-    def get_uniqe_items_count(self) -> int:
+    def get_unique_items_count(self) -> int:
         pass
 
 
